@@ -224,5 +224,5 @@ QZMath.tableCreate.prototype.updateData = function(){
 				input.last_value = input.value;
 			};
 		};
-}
+};
 	
