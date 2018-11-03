@@ -166,7 +166,7 @@ function init() {
 
 			var eslidertxt = document.getElementById("eslider_txt");
 			eslider.oninput = function() {
-				eslidertxt.innerHTML="\n" +"e = "+round(eslider.value/100,2);
+				eslidertxt.innerHTML="\n" +"e = "+round(eslider.value/100,2)+ " (eccentricity)";
 			}
 			
 			var x_cg_to_1=(m2.mass/(m1.mass+m2.mass))*-1;
@@ -177,7 +177,7 @@ function init() {
 			var rate_value="CG";
 			var m1slidertxt = document.getElementById("m1slider_txt");
 			m1slider.oninput = function() {
-				m1slidertxt.innerHTML="\n" +"m<sub>1</sub> = "+round(m1slider.value/100,2)+" , m<sub>2</sub> = "+round((1-m1slider.value/100),2);
+				m1slidertxt.innerHTML="\n" +"m<sub>1</sub> = "+round(m1slider.value/100,2)+" , m<sub>2</sub> = "+round((1-m1slider.value/100),2)+"  (mass ratio)";
 				
 				m1.mass=10*m1slider.value/100;
 				m2.mass=10*(1-m1slider.value/100);
@@ -190,7 +190,7 @@ function init() {
 			var hslidertxt = document.getElementById("hslider_txt");
 			hslider.oninput = function() {
 				n = (mu*mu/(h*h*h))*Math.pow(1-e*e,3/2);
-				hslidertxt.innerHTML="\n" +"h = "+round((hslider.value/100)*10,2);
+				hslidertxt.innerHTML="\n" +"h = "+round((hslider.value/100)*10,2)+" (specific relative angular momentum)";
 			}
 			
 			eslider.oninput();

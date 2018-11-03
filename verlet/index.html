@@ -25,16 +25,23 @@
 <body bgcolor="#888888" text="#000000">
 <div id="wrap">
 
-<h1>Verlet</h1>
+<h1>Verlet Physics</h1>
 <br>
-Basic verlet implementation
+Real time physics simulation is <b>hard</b> to get right. Integrating equations of motion, collision detection, and constraint solving are all very involved topics with tons of complicated literature. Getting things right takes a lot of effort.
+<br>
+<br>
+Verlet Physics, or related methods like position based dynamics, are nice because they simplify the work involved with physics simulation considerably. They introduce their own limitations, and their own way of thinking, but generally for systems involving spheres (really point masses because they have no rotational inertia) and static geometry and constraints between spheres they work really well. They're very stable, and very fast. Collision detection is easy when everything is a sphere and signed distance field, and constraint resolution is intuitive, since it involves moving things into the position they should be rather than solving for forces.
+<br>
+<br>
+Below is a little interactive toy I made using these methods. I like to apply these techniques a lot in games because the implementation is so simple and the code runs really fast. You can make 1D, 2D, and 3D systems (N dimensional works too but good luck visualizing it) with essentially the same techniques, and get nice physically based animation. The systems are stable and adding constraints on the movement is easy to make very stable by changing the priority of various constraint solving steps around. You can make "hacky" physics that runs really fast, looks just as good as real rigid body physics, and remove all the overhead of having an enormous proper 3D physics engine do a ton of work just to make a springy thing move around based on some changing positions.
 <br>
 <br>
 <script src="js/main.js"></script>
 <br>
 <div id="cent_text">
-<i><b>figure 1</b> : the graphics window.</i>
+<i><b>figure 1</b> : randomly generated verlet goop, use the mouse buttons and click around, refresh for different goop.</i>
 </div>
+<br>
 <hr>
 <h2>Site Navigation</h2>
 <a href="../index.html">Homepage</a>

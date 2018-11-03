@@ -199,7 +199,7 @@ function onMouseMove( event ) {
 window.addEventListener( 'mousemove', onMouseMove);
 
 //1px white line border
-renderer.domElement.style.border = "1px solid #FFFFFF"			
+//renderer.domElement.style.border = "1px solid #FFFFFF"			
 
 controls = new THREE.OrbitControls( camera, renderer.domElement );
 // enable animation loop when using damping or autorotation
@@ -255,7 +255,9 @@ var si = new VerletSpring(v0,v1,128,v_world);
 for (var i = 0; i < 10; i++) {
 	var vi = new VerletPt(16+Math.random()*32,1,v_world);
 	vi.setPosition(new THREE.Vector3(i*150,0,0))
+	if(Math.random()>0.5){
 	var si = new VerletSpring(v1,vi,64+Math.random()*80,v_world);
+	}
 	if(Math.random()>0.5){
 		var si = new VerletSpring(vi,v0,64+Math.random()*80,v_world);
 	}
@@ -270,7 +272,7 @@ var plane4 = new VerletSolidPlane(new THREE.Vector3(0,0,500), new THREE.Vector3(
 var plane5 = new VerletSolidPlane(new THREE.Vector3(0,0,-500), new THREE.Vector3(0,0,1),new THREE.Color(1,1,1),v_world);
 
 	g = new THREE.SphereGeometry( 10, 100, 100);
-	m = new THREE.MeshPhongMaterial( { color: new THREE.Color(0,1,0) } );
+	m = new THREE.MeshPhongMaterial( { color: new THREE.Color(1,0,0) } );
 
 	mouse_mesh = new THREE.Mesh(g,m);
 	scene.add(mouse_mesh);
@@ -317,7 +319,9 @@ var update = function(){
 		selected_VerletPt.p_prev.z =  QZMath.lerp(selected_VerletPt.p.z,selected_VerletPt.p_prev.z-(mouse3D.z-(selected_VerletPt.p.z+cursor_selected_offset.z))*0.1,0.8);
 		
 	}
-	
+	v1.p_prev.x =  QZMath.lerp(v1.p.x,v1.p_prev.x-(Math.cos(current_time_ms*Math.PI/2500)*100-(v1.p.x+cursor_selected_offset.x))*0.1,0.8);
+	v1.p_prev.y =  QZMath.lerp(v1.p.y,v1.p_prev.y-(300+Math.cos(current_time_ms*Math.PI/1000)*200-(v1.p.y+cursor_selected_offset.y))*0.1,0.8);
+	v1.p_prev.z =  QZMath.lerp(v1.p.z,v1.p_prev.z-(Math.sin(current_time_ms*Math.PI/2500)*100-(v1.p.z+cursor_selected_offset.z))*0.1,0.8);
 	/*var e = camera.matrixWorld.elements;
 	var cam_x = new THREE.Vector3(e[ 0 ],e[ 1 ],e[ 2 ]);
 	var cam_y = new THREE.Vector3(e[ 4 ],e[ 5 ],e[ 6 ]);

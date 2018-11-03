@@ -7,6 +7,12 @@
 			renderer.setSize( w, h );
 			renderer.setClearColor ( new THREE.Color( 0, 0, 0 ), 0.0 )
 			document.getElementById("wrap").appendChild( renderer.domElement );
+			controls = new THREE.OrbitControls( camera, renderer.domElement );
+			// enable animation loop when using damping or autorotation
+			//controls.enableDamping = true;
+			//controls.dampingFactor = 0.5;
+			controls.enableZoom = false;
+			controls.enablePan=true;
 /////////////////////// copy paste test code
     defines = {}; // <=============================== added
     //defines[ "USE_MAP" ] = ""; // <=============================== added
@@ -70,7 +76,7 @@
 				delta += 0.1;
 				//uniform
 				mesh.material.uniforms.delta.value = delta;
-				
+				controls.update();
 				//attribute
 
 

@@ -1,7 +1,7 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="index.css">
-	<META name="keywords" content="Quazi, TowerClimb, Tower Climb, game, gamedev, indie, engineer, engineering, programming, Kevin"> 
+	<META name="keywords" content="Quazi, TowerClimb, Tower Climb, game, gamedev, indie, engineer, engineering, programming, Kevin Bergamin"> 
 	<title>Quazi (Homepage)</title>
 		<style>
 			body { margin: 0; }
@@ -18,57 +18,17 @@
 
 <img src="/images/Boltzmann.jpg" alt="Main Image" class="displayed" id="med_img">
 <div id="cent_text">
-Boltzmann statue in the krunberg yard.
+Boltzmann liked entropy a lot.
 </div>
 <br>
-Hi, I'm Quazi, a game developer and aspiring mechanical engineer. You may know me as one of the creators of "TowerClimb". This is my website. You may think it looks
-a little dated... too bad! Web 1.0 rules, so here's an animated gif of a skeleton,
+I'm Quazi, an indie game developer with a mechanical engineering degree. You may know me as one of the creators of "TowerClimb". This is my website, yes, it intentionally has a Web 1.0  <b>aesthetic</b>.
 <img src="/images/skeleton.gif" alt="i'm a skeleton" class="displayed" id="med_img">
-Pretty cool, right? (if you don't it, just be grateful I don't have a tiled marble background and a midi playing) Anyway you'll find various bits of documentation on unfinished projects, 
-little programming experiments, some of my artwork, and various bits of knowledge
-that I've accumulated over the years on this page. Enjoy! 
+Gotta have a cheesy gif on the homepage, right? Anyway I'm hoping to slowly add various interactive demos, cool math and physics visualizations, artistic toys, and summaries of little things I've learned over the years to this site. This is meant to be a place to display some of my coding experiments and jot down bits of knowledge. Enjoy! 
 	<br>
 	<br>
-	<hr>
-<h2>Site Navigation</h2>
-<a href="rocket_nozzle/index.html">Converging Diverging Rocket Nozzle</a>, Basics of idealized rocket nozzle compressible fluid dynamics.
-<br>
-<a href="orbits/index.html">Orbital Mechanics</a>, Basics of Orbital Mechanics.	
-<h2>My Links</h2>
-<a href="https://twitter.com/_Quazi_">Twitter</a>, My twitter page.
-<br>
-<a href="http://store.steampowered.com/app/396640/">TowerClimb</a>, Steam page for the game I've been working on the past few years!
-<br>
-<a href="http://gamejolt.com/@Quazi">GameJolt</a>, My GameJolt page with some of my past games.
-<br>
-<a href="http://www.davioware.com/">Davioware</a>, Link to my brother's website.
-<br>
-<a href="http://gamejolt.com/@Davioware">GameJolt</a>, Link to my brother's gamejolt page.
-<h2>Cool Websites</h2>
-<a href="http://www.iquilezles.org/">Inigo Quilez</a>, awesome source of information on demoscene and CG programming.
-<br>
-<a href="http://woodgears.ca/">Matthias Wandel</a>, an awesome woodworker / tinkerer, check out his youtube channel too!
-<br>
-<a href="http://theorangeduck.com/">Daniel Holden</a>, genius with machine learning.
-<br>
-<a href="http://www.karlsims.com/">Karl Sims</a>, some very cool programming / math experiments.
-<br>
-<a href="https://threejs.org/">three.js</a>, a great WebGL javascript library.
-<br>
-<a href="http://www.ulillillia.us/">ulillillia</a>, an interesting read.
-<br>
-<a href="https://en.wikipedia.org/">Wikipedia</a>, good for finding info on anything.
-<br>
-<a href="https://thebookofshaders.com/">The Book of Shaders</a>, cool shader tricks
-
-	<br>
-	<br>
-	<hr>
-<div id="copyright_text">
-&copy; 2016 Kevin Bergamin.
-</div>
-
+<script src="js/QZMath.js"></script>
 <script src="js/three.js"></script>
+<script src="js/OrbitControls.js"></script>	
 <script type="x-shader/x-vertex" id="vertexShader">
 
 /*uniform float delta;
@@ -205,11 +165,49 @@ void main() {
 
 </script>
 <script src="js/woobly_torus.js"></script>
-
-<div id="3D Content">
-Test area
+<div id="cent_text">
+The site may look Web 1.0, but I'm going to be using lots of Web 3.0 features. Make sure you have a modern browser!
 </div>
+<br>
+<br>
+	<hr>
+<h2>Site Navigation</h2>
+<a href="verlet/index.html">verlet physics</a>, interactive 3D physics using verlet integration and projection to solve constraints.
+<br>
+<a href="orbits/index.html">orbital mechanics</a>, basics of orbital mechanics.	
+<h2>Useful Links</h2>
+<a href="https://twitter.com/_Quazi_">Twitter</a>, my twitter page.
+<br>
+<a href="http://store.steampowered.com/app/396640/">TowerClimb</a>, Steam page for the roguelike platformer made by my brother and I.
+<br>
+<a href="http://gamejolt.com/@Quazi">GameJolt</a>, my GameJolt page with some of my past games.
+<br>
+<a href="http://www.davioware.com/">Davioware</a>, link to my brother's website.
+<br>
+<a href="http://gamejolt.com/@Davioware">GameJolt</a>, link to my brother's gamejolt page.
+<h2>Cool Websites</h2>
+<a href="http://www.iquilezles.org/">Inigo Quilez</a>, awesome source of information on demoscene and CG programming.
+<br>
+<a href="http://woodgears.ca/">Matthias Wandel</a>, an awesome woodworker / tinkerer, check out his youtube channel too!
+<br>
+<a href="http://theorangeduck.com/">Daniel Holden</a>, machine learning and graphics programming tricks.
+<br>
+<a href="http://www.karlsims.com/">Karl Sims</a>, some very cool programming / math experiments.
+<br>
+<a href="https://threejs.org/">three.js</a>, a great WebGL javascript library, used extensively on this site.
+<br>
+<a href="http://www.ulillillia.us/">ulillillia</a>, an interesting read.
+<br>
+<a href="https://en.wikipedia.org/">Wikipedia</a>, good for finding info on anything (bet you didn't know about this).
+<br>
+<a href="https://thebookofshaders.com/">The Book of Shaders</a>, cool shader tricks
 
+	<br>
+	<br>
+	<hr>
+<div id="copyright_text">
+&copy; 2018 Kevin Bergamin.
+</div>
 </div>
 
 </BODY>
