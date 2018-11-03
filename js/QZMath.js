@@ -5,6 +5,9 @@ window.QZ_IE_Hack_updates= new Array();
 QZMath = {};
 QZKeys = {};
 QZMouse = {};
+QZTouch = {};
+QZTouch.touches={};
+QZTouch.hasTouch=false;
 
 QZKey_frames = {};
 QZMouse_frames = {0:0,1:0,2:0};
@@ -32,6 +35,17 @@ QZMouse_frames = {0:0,1:0,2:0};
 	window.addEventListener( 'mouseup', onMouseUp, false );
 	window.addEventListener( 'keydown', onKeyDown, false );
 	window.addEventListener( 'keyup', onKeyUp, false );
+	// touch stuff
+	function onTouchStart( event ) {
+		QZTouch.hasTouch=true;
+		/*//support multiTouch
+		for (var i = 0, L = event.touches.length; i < L; i++) {
+			QZTouch.hasTouch=true;
+		};*/
+	};	
+	window.addEventListener( 'touchstart', onTouchStart, false );
+	//window.domElement.addEventListener( 'touchend', onTouchEnd, false );
+	//window.domElement.addEventListener( 'touchmove', onTouchMove, false );
 })();
 
 //call this every render if you want a sane callback free keyboard detection system. Be sure to populate the _frames with the keycodes and buttons you want to time.

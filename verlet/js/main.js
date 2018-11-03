@@ -275,6 +275,7 @@ var plane5 = new VerletSolidPlane(new THREE.Vector3(0,0,-500), new THREE.Vector3
 	m = new THREE.MeshPhongMaterial( { color: new THREE.Color(1,0,0) } );
 
 	mouse_mesh = new THREE.Mesh(g,m);
+	mouse_mesh.visible = false;
 	scene.add(mouse_mesh);
 var cursor_last_pt = new THREE.Vector3(0,0,0);
 var diff = new THREE.Vector3(0,0,0);
@@ -282,6 +283,11 @@ var cursor_selected_offset = new THREE.Vector3(0,0,0);
 var selected_VerletPt = null; 
 //---------------------------------------------------------------------------------------define main update loop
 var update = function(){
+
+	//hide cursor on touch screen
+	if(QZMouse_frames[0] > 0 || QZMouse_frames[1] > 0 || QZMouse_frames[2] > 0) 	mouse_mesh.visible = true;
+	if(QZTouch.hasTouch) 	mouse_mesh.visible = false;
+	
 	QZMath.updateKeyAndMouseFrames();
 	for (var i = 0; i < v_world.selectable_mesh_count; i++) {
 		var mesh = v_world.selectable_mesh_list[i];
