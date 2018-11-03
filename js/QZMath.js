@@ -154,4 +154,75 @@ QZMath.createSlider = function(name,start_value,min_value,max_value,step_size){
 	
 	this.slider.setAttribute("onchange","window.QZ_IE_slider_hack.s"+window.QZ_IE_slider_hack.index+"_onchange()");
 };
+
+QZMath.tableCreate = function(element,rows,columns) {
+	this.e=[]
+	this.rows = rows;
+	this.columns = columns;
+    this.tbl  = document.createElement('table');
+	this.input_elements = [];
+    this.tbl.style.width  = '200px';
+    this.tbl.style.height  = '200px';
+	this.tbl.classList.add('borderless_table');
+	this.tbl.style.align="center";
+
+    for(var i = 0; i < rows; i++){
+        var tr = this.tbl.insertRow();
+		this.input_elements[i] = [];
+		this.e[i]=[]
+        for(var j = 0; j < columns; j++){
+                var td = tr.insertCell();
+				var x = document.createElement('input');
+				x.type='text';
+				x.classList.add('mtx_input');
+				x.maxLength=5;
+				x.value=(i==j)*1;
+				td.style['text-align']='center';
+                td.appendChild(x);
+				
+				this.input_elements[i][j] = x;
+				x.last_value = null;
+                //td.style.border = '1px solid black';         
+        }
+    }
+	this.updateData();
+    element.appendChild(this.tbl);
+}
+
+QZMath.tableCreate.prototype.updateData = function(){
+	    for(var i = 0; i < this.rows; i++){
+		    for(var j = 0; j < this.columns; j++){
+				var input = this.input_elements[i][j];
+				//only allow for decimal numbers
+				if(input.last_value != input.value){
+					//only run regex when necessary, but call this every frame to live correct problems...
+					// works in chrome...ie maybe not
+					var first = input.value.charAt(0);
+					var str;
+					if(first === "-"){
+						str = input.value.slice(1).replace(/[^\d\.]/g, '').replace(/^\.*/, '').replace(/(\.\d*)(.*)/, '$1');
+						input.value = "-"+str;
+					}
+					else if(first === "."){
+						str = input.value.slice(1).replace(/[^\d\.]/g, '').replace(/^\.*/, '').replace(/(\.\d*)(.*)/, '$1');
+						input.value = "0."+str;
+					}else if(first === "0"){
+						var second = input.value.charAt(1);
+						if(second !== "."){
+							str = input.value.slice(1).replace(/[^\d\.]/g, '').replace(/^\.*/, '').replace(/(\.\d*)(.*)/, '$1');
+							input.value = str;
+						}
+					}else{
+						input.value = input.value.replace(/[^\d\.]/g, '').replace(/^\.*/, '').replace(/(\.\d*)(.*)/, '$1');;
+					}
+					var value = parseFloat(input.value);
+					if(isNaN(value)){
+						value=0;
+					};
+					this.e[i][j]= value;
+				};
+				input.last_value = input.value;
+			};
+		};
+}
 	
