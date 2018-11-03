@@ -1,0 +1,95 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<META name="keywords" content="Quazi, TowerClimb, Tower Climb, game, gamedev, indie, engineer, engineering, programming, Kevin"> 
+	<title>Quazi (Homepage)</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	
+</head>
+
+<body bgcolor="#e8e8e8" text="#000000">
+
+<div id="wrap">
+
+<h1>WebGL Canvas</h1>
+<canvas id="c"></canvas>
+
+</div>
+
+</body>
+  
+<!-- you can and should delete this script. it is only used on the site to help with errors -->
+<script id="2d-vertex-shader" type="notjs">
+
+  // an attribute will receive data from a buffer
+  attribute vec4 a_position;
+  varying vec4 p_position;
+  // all shaders have a main function
+  void main() {
+
+    // gl_Position is a special variable a vertex shader
+    // is responsible for setting
+    gl_Position = a_position;
+	p_position = gl_Position*0.5+0.5;
+  }
+
+</script>
+<script id="2d-fragment-shader" type="notjs">
+
+// fragment shaders don't have a default precision so we need
+// to pick one. mediump is a good default
+precision mediump float;
+
+float sdSphere( vec3 p, float s )
+{
+	return length(p)-s;
+}
+
+float sdBox( vec3 p, vec3 b )
+{
+    vec3 d = abs(p) - b;
+    return min(max(d.x,max(d.y,d.z)),0.0) + length(max(d,0.0));
+}
+
+//------------------------------------------------------------------
+
+float opS( float d1, float d2 )
+{
+    return max(-d2,d1);
+}
+
+vec2 opU( vec2 d1, vec2 d2 )
+{
+	return (d1.x<d2.x) ? d1 : d2;
+}
+
+vec3 opRep( vec3 p, vec3 c )
+{
+    return mod(p,c)-0.5*c;
+}
+
+vec3 opTwist( vec3 p )
+{
+    float  c = cos(10.0*p.y+10.0);
+    float  s = sin(10.0*p.y+10.0);
+    mat2   m = mat2(c,-s,s,c);
+    return vec3(m*p.xz,p.y);
+}
+
+//------------------------------------------------------------------
+
+uniform vec4 u_color;
+varying vec4 p_position;
+
+void main() {
+	// gl_FragColor is a special variable a fragment shader
+	// is responsible for setting
+	gl_FragColor = u_color*p_position; // return redish-purple
+}
+
+</script>
+<script src="js/webgl-utils.js"></script>
+<script src="js/main.js"></script>

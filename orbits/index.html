@@ -1,0 +1,99 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../index.css">
+	<META name="keywords" content="2 body,two body,orbital,mechanics, lagrange points, L1,L2,L3,L4,L5,gravitation,elements"> 
+	<title>Orbital Mechanics</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function () {	
+  // Hide MathJax until rendered by putting them in divs of the class "hide_math"
+	var mathdivs = document.getElementsByClassName("hide_math");
+	for (i = 0; i < mathdivs.length; i++) { 
+		mathdivs[i].style.visibility = "";
+	}	
+  });
+</script>
+<script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS_HTML-full"></script>
+<script src="../js/QZMath.js"></script>
+<script src="../js/three.js"></script>
+<script src="../js/OrbitControls.js"></script>	
+</head>
+
+<body bgcolor="#888888" text="#000000">
+<div id="wrap">
+
+<h1>Orbital Mechanics</h1>
+<br>
+Orbital mechanics for simplified problems (two massive bodies) are generally quite simple. However as always I find the problems lack good visualizations. Usually the 2-body problem is brought up as the canonical problem in orbital mechanics. This is for good reason, as it's the only type of orbit that can be easily analyzed, and generalizes to a large number of real world applications. The reason being that although all objects with gravity influence each other, the effect of massive bodies strongly overpowers the effect of smaller bodies, and they fall into orbits around a much heavier objects. This can be observed in how the moon and satellites orbit the earth, the earth orbits the sun, and the sun orbits the center of the galaxy. This is somewhat of an oversimplification, but demonstrates how we intuitively visualize orbits as 2-body problems.
+<br>
+<br>
+In general, when thinking of orbits, we tend to think that one object orbits the other more massive object, like a satellite around the earth. However this is not true, the earth is also orbiting the satellite! To be more precise, when two objects are in orbit, they both orbit around their center of mass. It only seems like the satellite is orbiting the earth because the earth is so much more massive. The center of mass of the satellite-earth pair is just extremely close to the center of the earth since the earths mass is so much larger. If two objects of similar mass orbit each other it actually looks like the following:
+<br>
+<br>
+<div id="cent_text">
+	<div class="slidecontainer">
+	<br>
+	  <input type="range" min="0" max="99" value="80" class="slider" id="eslider" onchange="eslider.oninput()">
+	  <div id="eslider_txt">
+	  </div>
+	</div>
+	<div class="slidecontainer">
+		<br>
+	  <input type="range" min="0" max="100" value="50" class="slider" id="m1slider" onchange="m1slider.oninput()">
+	  <div id="m1slider_txt">
+	  </div>
+	</div>
+	<div class="slidecontainer">
+		<br>
+	  <input type="range" min="1" max="100" value="80" class="slider" id="hslider" onchange="hslider.oninput()">
+	  <div id="hslider_txt">
+	  </div>
+	</div>
+	<br>
+	Frame of Reference :
+	<br>
+	<br>
+	<form>
+  <input type="radio" name="bodyfocus" value="CG" checked> CG
+  <input type="radio" name="bodyfocus" value="m1"> m<sub>1</sub>
+  <input type="radio" name="bodyfocus" value="m2"> m<sub>2</sub>  
+	</form> 
+	
+</div>
+<script src="js/twobody.js"></script>
+<br>
+<div id="cent_text">
+<i><b>figure 1</b> : 2 bodies of orbiting each other with variable properties.</i>
+</div>
+<br>
+Another point which usually conflicts with people's intuition is that orbits do not have to be circular. We tend to see diagrams of the planets orbiting the sun and note how circular the orbits look, however in reality the orbits usually have some <i>eccentricity</i>. This means they're usually elliptic. In general however, orbits can take on the form of any <i>conic section</i>, dependent on the degree of eccentricity. They're usually referred to as trajectories in cases where the "orbital" path is open.
+<div class="hide_math" style="visibility:hidden">
+	<p>
+	\begin{align}
+	e & = 0 \rightarrow \text{circular orbit}\\
+	0< e & <1 \rightarrow \text{elliptic orbit}\\
+	e & =1 \rightarrow \text{parabolic trajectory}\\
+	e & >1 \rightarrow \text{hyperbolic trajectory}\\
+	\end{align}
+	</p>
+</div>
+Orbits in the solar system are themselves slightly elliptic, nature isn't always as perfect as it seems. In general when working with orbits, we center the problem around one of the bodies rather than what is seen in <b>figure 1</b> around the center of mass. <b>figure 1</b> shows what a pair of orbiting bodies look like from an inertial frame of reference, however when working through the math most derivations and problems opt to center on one of the bodies. This doesn't change too much, except that one of the bodies will then be at the focus of the path, and the other will be the sole object moving around. The center of mass itself then seems to orbit around the "fixed" body.
+	
+	<br>
+	<br>
+	<hr>
+<h2>Site Navigation</h2>
+<a href="../index.html">Homepage</a>
+	<br>
+	<br>
+	<hr>
+<div id="copyright_text">
+&copy; 2016 Kevin Bergamin.
+</div>
+</div>
+
+</BODY>
+</HTML>

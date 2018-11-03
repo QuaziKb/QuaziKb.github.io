@@ -1,0 +1,216 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<META name="keywords" content="Quazi, TowerClimb, Tower Climb, game, gamedev, indie, engineer, engineering, programming, Kevin"> 
+	<title>Quazi (Homepage)</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	
+</head>
+
+<body bgcolor="#e8e8e8" text="#000000">
+
+<div id="wrap">
+
+<h1>Quazi</h1>
+
+<img src="boltzmann.jpg" alt="Main Image" class="displayed" id="med_img">
+<div id="cent_text">
+Boltzmann statue in the krunberg yard.
+</div>
+<br>
+Hi, I'm Quazi, a game developer and aspiring mechanical engineer. You may know me as one of the creators of "TowerClimb". This is my website. You may think it looks
+a little dated... too bad! Web 1.0 rules, so here's an animated gif of a skeleton,
+<img src="Skeleton.gif" alt="i'm a skeleton" class="displayed" id="med_img">
+Pretty cool, right? (if you don't it, just be grateful I don't have a tiled marble background and a midi playing) Anyway you'll find various bits of documentation on unfinished projects, 
+little programming experiments, some of my artwork, and various bits of knowledge
+that I've accumulated over the years on this page. Enjoy! 
+	<br>
+	<br>
+	<hr>
+<h2>Site Navigation</h2>
+<a href="rocket_nozzle/index.html">Converging Diverging Rocket Nozzle</a>, Basics of idealized rocket nozzle compressible fluid dynamics.
+<br>
+<a href="orbits/index.html">Orbital Mechanics</a>, Basics of Orbital Mechanics.	
+<h2>My Links</h2>
+<a href="https://twitter.com/_Quazi_">Twitter</a>, My twitter page.
+<br>
+<a href="http://store.steampowered.com/app/396640/">TowerClimb</a>, Steam page for the game I've been working on the past few years!
+<br>
+<a href="http://gamejolt.com/@Quazi">GameJolt</a>, My GameJolt page with some of my past games.
+<br>
+<a href="http://www.davioware.com/">Davioware</a>, Link to my brother's website.
+<br>
+<a href="http://gamejolt.com/@Davioware">GameJolt</a>, Link to my brother's gamejolt page.
+<h2>Cool Websites</h2>
+<a href="http://www.iquilezles.org/">Inigo Quilez</a>, awesome source of information on demoscene and CG programming.
+<br>
+<a href="http://woodgears.ca/">Matthias Wandel</a>, an awesome woodworker / tinkerer, check out his youtube channel too!
+<br>
+<a href="http://theorangeduck.com/">Daniel Holden</a>, genius with machine learning.
+<br>
+<a href="http://www.karlsims.com/">Karl Sims</a>, some very cool programming / math experiments.
+<br>
+<a href="https://threejs.org/">three.js</a>, a great WebGL javascript library.
+<br>
+<a href="http://www.ulillillia.us/">ulillillia</a>, an interesting read.
+<br>
+<a href="https://en.wikipedia.org/">Wikipedia</a>, good for finding info on anything.
+<br>
+<a href="https://thebookofshaders.com/">The Book of Shaders</a>, cool shader tricks
+
+	<br>
+	<br>
+	<hr>
+<div id="copyright_text">
+&copy; 2016 Kevin Bergamin.
+</div>
+
+<script src="js/three.js"></script>
+<script type="x-shader/x-vertex" id="vertexShader">
+
+/*uniform float delta;
+varying vec2 vUv;
+#define PI 3.1415926535897932384626433832795
+void main() 
+{
+    vUv = uv;
+
+    vec3 p = position;
+    p.x += sin(vUv.x*PI*2.0*2.0+delta) * 10.0;
+    p.y += cos(vUv.x*PI*2.0*2.0-delta) * 10.0;
+	//p.z += cos(vUv.x*PI*2.0+delta) * 10.0;
+
+	vec4 modelViewPosition = modelViewMatrix * vec4(p, 1.0);
+	gl_Position = projectionMatrix * modelViewPosition;
+}*/
+uniform float delta;
+#define PHONG
+varying vec3 vViewPosition;
+#ifndef FLAT_SHADED
+	varying vec3 vNormal;
+#endif
+#include <common>
+#include <uv_pars_vertex>
+#include <uv2_pars_vertex>
+#include <displacementmap_pars_vertex>
+#include <envmap_pars_vertex>
+#include <color_pars_vertex>
+#include <fog_pars_vertex>
+#include <morphtarget_pars_vertex>
+#include <skinning_pars_vertex>
+#include <shadowmap_pars_vertex>
+#include <logdepthbuf_pars_vertex>
+#include <clipping_planes_pars_vertex>
+void main() {	
+	#include <uv_vertex>
+	#include <uv2_vertex>
+	#include <color_vertex>
+	#include <beginnormal_vertex>
+	#include <morphnormal_vertex>
+	#include <skinbase_vertex>
+	#include <skinnormal_vertex>
+	#include <defaultnormal_vertex>
+#ifndef FLAT_SHADED
+	vNormal = normalize( transformedNormal );
+#endif
+	#include <begin_vertex>
+	#include <morphtarget_vertex>
+	#include <skinning_vertex>
+	#include <displacementmap_vertex>
+    transformed.x += sin(uv.x*PI*2.0*2.0+delta) * 10.0;
+    transformed.y += cos(uv.x*PI*2.0*2.0-delta) * 10.0;
+	#include <project_vertex>
+	#include <logdepthbuf_vertex>
+	#include <clipping_planes_vertex>
+	vViewPosition = - mvPosition.xyz;
+	#include <worldpos_vertex>
+	#include <envmap_vertex>
+	#include <shadowmap_vertex>
+	#include <fog_vertex>
+}
+
+</script>
+<script type="x-shader/x-fragment"  id="fragmentShader">
+/*uniform float delta;
+varying float vOpacity;
+varying vec2 vUv;
+#define PI 3.1415926535897932384626433832795
+void main() {
+
+    float r = sin(vUv.x*PI*2.0+delta);
+    float g =cos(vUv.y*PI*2.0+delta);
+    float b =sin(vUv.y*PI*2.0-delta);
+    vec3 rgb = vec3(r, g, b);
+
+	gl_FragColor = vec4(rgb, 1.0);
+}*/
+uniform float delta;
+#define PHONG
+uniform vec3 diffuse;
+uniform vec3 emissive;
+uniform vec3 specular;
+uniform float shininess;
+uniform float opacity;
+#include <common>
+#include <packing>
+#include <dithering_pars_fragment>
+#include <color_pars_fragment>
+#include <uv_pars_fragment>
+#include <uv2_pars_fragment>
+#include <map_pars_fragment>
+#include <alphamap_pars_fragment>
+#include <aomap_pars_fragment>
+#include <lightmap_pars_fragment>
+#include <emissivemap_pars_fragment>
+#include <envmap_pars_fragment>
+#include <gradientmap_pars_fragment>
+#include <fog_pars_fragment>
+#include <bsdfs>
+#include <lights_pars>
+#include <lights_phong_pars_fragment>
+#include <shadowmap_pars_fragment>
+#include <bumpmap_pars_fragment>
+#include <normalmap_pars_fragment>
+#include <specularmap_pars_fragment>
+#include <logdepthbuf_pars_fragment>
+#include <clipping_planes_pars_fragment>
+void main() {
+	#include <clipping_planes_fragment>
+	vec4 diffuseColor = vec4( diffuse, opacity );
+	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
+	vec3 totalEmissiveRadiance = emissive;
+	#include <logdepthbuf_fragment>
+	#include <map_fragment>
+	#include <color_fragment>
+	#include <alphamap_fragment>
+	#include <alphatest_fragment>
+	#include <specularmap_fragment>
+	#include <normal_fragment>
+	#include <emissivemap_fragment>
+	#include <lights_phong_fragment>
+	#include <lights_template>
+	#include <aomap_fragment>
+	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;
+	#include <envmap_fragment>
+	gl_FragColor = vec4( outgoingLight, diffuseColor.a );
+	#include <tonemapping_fragment>
+	#include <encodings_fragment>
+	#include <fog_fragment>
+	#include <premultiplied_alpha_fragment>
+	#include <dithering_fragment>
+}
+
+</script>
+<script src="js/woobly_torus.js"></script>
+
+<div id="3D Content">
+Test area
+</div>
+
+</div>
+
+</BODY>
+</HTML>
