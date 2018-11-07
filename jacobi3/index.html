@@ -1,0 +1,75 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../index.css">
+	<META name="keywords" content="matrix, linear, algebra, interactive, jacobi, algorithm"> 
+	<title>Jacobi Algorithm</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function () {	
+  // Hide MathJax until rendered by putting them in divs of the class "hide_math"
+	var mathdivs = document.getElementsByClassName("hide_math");
+	for (i = 0; i < mathdivs.length; i++) { 
+		mathdivs[i].style.visibility = "";
+	}	
+  });
+</script>
+<script 
+   src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'>
+</script>
+<script src="../js/QZMath.js"></script>
+<script src="../js/three.js"></script>
+<script src="../js/OrbitControls.js"></script>	
+</head>
+<body>
+<div id="wrap">
+
+<h1>3x3 Jacobi Algorithm</h1>
+<br>
+Finding eigenvalues and eigenvectors of symmetric matrices is useful in many cases. Typically you don't have to implement your own algorithms to do this since there are so many packages around that can do it really well. But there are still times you might want to do it yourself, particularly when dealing with small matrices so you can write some tight code. for 3x2 matrices there's a fast analytic approach, and this can be leveraged to iteratively converge for "larger" matrices. The technique I'm going to use here is called the "Jacobi Algorithm". I used <a href = http://people.math.gatech.edu/~klounici6/2605/Lectures%20notes%20Carlen/chap3.pdf>Chapter 3 of Calculus++: The Symmetric Eigenvalue Problem</a> by Eric A Carlen to figure out how to get this working.
+<br>
+<br>
+<div class="hide_math centered" style="visibility:hidden">
+	<table class="borderless_table">
+	<tr>
+		<td style="text-align:right;">\(\LARGE A ={A}^\intercal = \)</td>
+		<td>
+			<div id="A_mtx" class="bracketed"></div>
+		</td> 
+	</tr>
+	<tr>
+		<td style="text-align:right;">\(\LARGE U = \)</td>
+		<td>
+			<div id="U_mtx" class="bracketed"></div>
+		</td> 
+	</tr>
+	<tr>
+		<td style="text-align:right;">\(\LARGE \Lambda = {U}^\intercal AU = \)</td>
+		<td>
+			<div id="UtAU_mtx" class="bracketed"></div>
+		</td> 
+	</tr>
+	</table>
+</div>
+<script src="js/main.js"></script>
+<br>
+<div id="cent_text">
+<i><b>figure 1</b> : modify matrix A by typing in entries.</i>
+</div>
+<br>
+<br>
+<hr>
+<h2>Site Navigation</h2>
+<a href="../index.html">Homepage</a>
+	<br>
+	<br>
+	<hr>
+<div id="copyright_text">
+&copy; 2018 Kevin Bergamin.
+</div>
+</div>
+
+</BODY>
+</HTML>

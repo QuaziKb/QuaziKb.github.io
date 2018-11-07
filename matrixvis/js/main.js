@@ -88,7 +88,7 @@ var update = function(){
 	A_mtx.updateData();
 	for(var i = 0; i < A_mtx.rows; i++){
 	    for(var j = 0; j < A_mtx.columns; j++){
-			cube.matrix.elements[i*4+j]=QZMath.lerp(cube.matrix.elements[i*4+j],A_mtx.e[i][j],0.1);
+			cube.matrix.elements[i*4+j]=QZMath.lerp(cube.matrix.elements[i*4+j],A_mtx.e[j][i],0.1);
 		};
 	};
 	for(var i = 0, L = faces.length; i < L; i++){

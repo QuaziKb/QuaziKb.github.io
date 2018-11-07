@@ -56,7 +56,7 @@
 			var mesh = new THREE.Mesh( geometry, mat );
 			scene.add( mesh );
 			
-			var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+			var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
 			scene.add( directionalLight );
 			directionalLight.position.set(1,1,1)
 
@@ -66,7 +66,7 @@
 			camera.position.z = 200;
 			var delta=0;
 			var animate = function () {
-				//mesh.material.uniforms.diffuse.value = new THREE.Color(1,(Math.sin(delta)+1)*0.5,(Math.cos(delta)+1)*0.5)
+				mesh.material.uniforms.diffuse.value = new THREE.Color(1,1,1)
 			
 				requestAnimationFrame( animate );
 

@@ -16,6 +16,8 @@ function VerletWorld(scene){
 	this.plane_count = 0;
 	this.spring_list = [];
 	this.spring_count = 0;
+	this.RB_list = [];
+	this.RB_count = 0;
 	this.selectable_mesh_list = [];
 	this.selectable_mesh_count = 0;
 };
@@ -55,6 +57,18 @@ VerletWorld.prototype.addVerletSpring = function(spring) {
 	this.spring_list.push(spring);
 	this.spring_count++;
 };
+VerletWorld.prototype.addVerletRB = function(RB) {
+	
+	RB.material = new THREE.MeshPhongMaterial( { color: new THREE.Color(1,1,1) } );
+	//RB.material.side = THREE.DoubleSide;
+	RB.mesh = new THREE.Mesh(RB.geom,RB.material);	
+	RB.mesh.castShadow=true;
+	RB.mesh.receiveShadow =true;
+	RB.mesh.matrixAutoUpdate = false;
+	this.scene.add(RB.mesh);
+	this.RB_list.push(RB);
+	this.RB_count++;
+};
 VerletWorld.prototype.step = function() {
 	for (var i = 0; i < this.pt_count; i++) {
 		var pt = this.pt_list[i];
@@ -74,6 +88,10 @@ VerletWorld.prototype.step = function() {
 	for (var i = 0; i < this.plane_count; i++) {
 		var plane = this.plane_list[i];
 		plane.resolve();
+	};
+	for (var i = 0; i < this.RB_count; i++) {
+		var RB = this.RB_list[i];
+		RB.resolve();
 	};
 	//update spring graphics
 	for (var i = 0; i < this.spring_count; i++) {
@@ -104,10 +122,12 @@ function VerletPt (radius,mass,world) {
 VerletPt.prototype.setPosition = function(position) {
 	this.p.copy(position);
 	this.p_prev.copy(position);
-	this.mesh.position.copy(position);
+	//this.mesh.position.copy(position);
 };
 function VerletSolidPlane(position,normal,color,world){
-	this.material = new THREE.MeshPhongMaterial( { color: color } );
+	//this.material = new THREE.MeshPhongMaterial( { color: color } );
+	this.material = new THREE.ShadowMaterial();
+	this.material.opacity = 0.25;
 	this.p = new THREE.Vector3().copy(position);
 	this.n = new THREE.Vector3().copy(normal);
 	this.n = this.n.normalize();
@@ -120,15 +140,15 @@ VerletSolidPlane.prototype.resolve = function() {
 			var pt = this.world.pt_list[i];
 			
 			//get signed distance from plane;
-			this.d.x = pt.p.x-this.p.x;
-			this.d.y = pt.p.y-this.p.y;
-			this.d.z = pt.p.z-this.p.z;
+			this.d.x = pt.p_prev.x-this.p.x;
+			this.d.y = pt.p_prev.y-this.p.y;
+			this.d.z = pt.p_prev.z-this.p.z;
 			var signed_d = this.n.dot(this.d)-pt.radius; //if the signed distance between surface of sphere and plane;
 			//console.log(signed_d);
 			if(signed_d<0){ //if less than zero, we're penetrating the surface and need to project out to resolve constraint;
-				pt.p.x = pt.p.x-this.n.x*signed_d;
-				pt.p.y = pt.p.y-this.n.y*signed_d;
-				pt.p.z = pt.p.z-this.n.z*signed_d;
+				pt.p.x = QZMath.lerp(pt.p.x,pt.p_prev.x-this.n.x*signed_d,0.5);
+				pt.p.y = QZMath.lerp(pt.p.y,pt.p_prev.y-this.n.y*signed_d,0.5);
+				pt.p.z = QZMath.lerp(pt.p.z,pt.p_prev.z-this.n.z*signed_d,0.5);
 			};			
 	};
 };
@@ -155,7 +175,160 @@ VerletSpring.prototype.resolve = function() {
 	var delta = (d-this.L)*this.k;
 	this.pt0.p.addScaledVector(this.n,delta*this.w0);
 	this.pt1.p.addScaledVector(this.n,-delta*this.w1);
-}
+};
+function VerletRB(pt_list,geom,world){
+	//meshless deformation constraint between group of points;
+	this.geom = geom;
+	this.pt_list = pt_list;
+	this.q_list = [];
+	this.pt_count = pt_list.length;
+	this.cm0 = new THREE.Vector3(0,0,0);
+	this.cm = new THREE.Vector3(0,0,0);
+	this.m_total = 0;
+	for (var i = 0; i < this.pt_count; i++) {
+		var pt = this.pt_list[i];
+		this.cm0.x+=pt.p.x*pt.mass;
+		this.cm0.y+=pt.p.y*pt.mass;
+		this.cm0.z+=pt.p.z*pt.mass;
+		this.m_total += pt.mass;
+	};
+	this.cm0.divideScalar(this.m_total);
+	//add q precomputed values
+	for (var i = 0; i < this.pt_count; i++){
+		var pt = this.pt_list[i];
+		this.q_list.push([
+		pt.p.x-this.cm0.x,
+		pt.p.y-this.cm0.y,
+		pt.p.z-this.cm0.z
+		])
+	};
+	
+	var Aqq = [
+	[0,0,0],
+	[0,0,0],
+	[0,0,0]
+	];
+	for (var i = 0; i < this.pt_count; i++){
+		var q = this.q_list[i];
+		var pt = this.pt_list[i];
+		
+		Aqq[0][0] += q[0]*q[0]*pt.mass;
+		Aqq[0][1] += q[0]*q[1]*pt.mass;		
+		Aqq[0][2] += q[0]*q[2]*pt.mass;		
+		Aqq[1][0] += q[1]*q[0]*pt.mass;		
+		Aqq[1][1] += q[1]*q[1]*pt.mass;		
+		Aqq[1][2] += q[1]*q[2]*pt.mass;			
+		Aqq[2][0] += q[2]*q[0]*pt.mass;		
+		Aqq[2][1] += q[2]*q[1]*pt.mass;
+		Aqq[2][2] += q[2]*q[2]*pt.mass;			
+	};
+	var detAqq = Aqq[0][0]*Aqq[1][1]*Aqq[2][2]+Aqq[0][1]*Aqq[1][2]*Aqq[2][0]+Aqq[0][2]*Aqq[1][0]*Aqq[2][1];
+	detAqq -= Aqq[2][0]*Aqq[1][1]*Aqq[0][2]+Aqq[1][0]*Aqq[0][1]*Aqq[2][2]+Aqq[0][0]*Aqq[1][2]*Aqq[2][1];
+	var Aqq00 =  Aqq[1][1]*Aqq[2][2] - Aqq[1][2]*Aqq[2][1];
+	var Aqq01 =  Aqq[0][2]*Aqq[2][1] - Aqq[0][1]*Aqq[2][2];
+	var Aqq02 =  Aqq[0][1]*Aqq[1][2] - Aqq[0][2]*Aqq[1][1];
+	var Aqq10 =  Aqq[1][2]*Aqq[2][0] - Aqq[1][0]*Aqq[2][2];
+	var Aqq11 =  Aqq[0][0]*Aqq[2][2] - Aqq[0][2]*Aqq[2][0];
+	var Aqq12 =  Aqq[0][2]*Aqq[1][0] - Aqq[0][0]*Aqq[1][2];
+	var Aqq20 =  Aqq[1][0]*Aqq[2][1] - Aqq[1][1]*Aqq[2][0];
+	var Aqq21 =  Aqq[0][1]*Aqq[2][0] - Aqq[0][0]*Aqq[2][1];
+	var Aqq22 =  Aqq[0][0]*Aqq[1][1] - Aqq[0][1]*Aqq[1][0];
+	
+	this.AqqInv = [
+		[Aqq00/detAqq,Aqq01/detAqq,Aqq02/detAqq],
+		[Aqq10/detAqq,Aqq11/detAqq,Aqq12/detAqq],
+		[Aqq20/detAqq,Aqq21/detAqq,Aqq22/detAqq]
+	];
+	
+	//console.log(this.q_list);
+	world.addVerletRB(this);
+	this.world = world;
+};
+VerletRB.prototype.resolve = function(){
+	//find center of mass of existing points
+	this.cm.x=0;
+	this.cm.y=0;
+	this.cm.z=0;
+	for (var i = 0; i < this.pt_count; i++) {
+		var pt = this.pt_list[i];
+		this.cm.x+=pt.p.x*pt.mass;
+		this.cm.y+=pt.p.y*pt.mass;
+		this.cm.z+=pt.p.z*pt.mass;
+	};
+	this.cm.x/=this.m_total;
+	this.cm.y/=this.m_total;
+	this.cm.z/=this.m_total;
+	//console.log(this.cm.x,this.cm.y,this.cm.z)
+	//populate Apq;
+	
+	var Apq = [
+	[0,0,0],
+	[0,0,0],
+	[0,0,0]
+	];
+	
+	for (var i = 0; i < this.pt_count; i++) {
+		var pt = this.pt_list[i];
+		var q = this.q_list[i];
+		var p0 = pt.mass*(pt.p.x-this.cm.x);
+		var p1 = pt.mass*(pt.p.y-this.cm.y);
+		var p2 = pt.mass*(pt.p.z-this.cm.z);
+		Apq[0][0] += p0*q[0];
+		Apq[0][1] += p0*q[1];
+		Apq[0][2] += p0*q[2];
+		Apq[1][0] += p1*q[0];
+		Apq[1][1] += p1*q[1];
+		Apq[1][2] += p1*q[2];	
+		Apq[2][0] += p2*q[0];
+		Apq[2][1] += p2*q[1];
+		Apq[2][2] += p2*q[2];	
+	};
+	
+	var A = QZMath.matrixMult(Apq,this.AqqInv);
+	/*var A = [
+		[Apq[0][0]*this.AqqInv[0][0]+Apq[0][1]*this.AqqInv[1][0]+Apq[0][2]*this.AqqInv[2][0], Apq[0][0]*this.AqqInv[0][1]+Apq[0][1]*this.AqqInv[1][1]+Apq[0][2]*this.AqqInv[2][1], Apq[0][0]*this.AqqInv[0][2]+Apq[0][1]*this.AqqInv[1][2]+Apq[0][2]*this.AqqInv[2][2]],
+		[Apq[1][0]*this.AqqInv[0][0]+Apq[1][1]*this.AqqInv[1][0]+Apq[1][2]*this.AqqInv[2][0], Apq[1][0]*this.AqqInv[0][1]+Apq[1][1]*this.AqqInv[1][1]+Apq[1][2]*this.AqqInv[2][1], Apq[1][0]*this.AqqInv[0][2]+Apq[1][1]*this.AqqInv[1][2]+Apq[1][2]*this.AqqInv[2][2]],
+		[Apq[1][0]*this.AqqInv[0][0]+Apq[2][1]*this.AqqInv[1][0]+Apq[2][2]*this.AqqInv[2][0], Apq[2][0]*this.AqqInv[0][1]+Apq[2][1]*this.AqqInv[1][1]+Apq[2][2]*this.AqqInv[2][1], Apq[2][0]*this.AqqInv[0][2]+Apq[2][1]*this.AqqInv[1][2]+Apq[2][2]*this.AqqInv[2][2]]	
+	];*/
+	var detA = A[0][0]*A[1][1]*A[2][2]+A[0][1]*A[1][2]*A[2][0]+A[0][2]*A[1][0]*A[2][1]-(A[2][0]*A[1][1]*A[0][2]+A[1][0]*A[0][1]*A[2][2]+A[0][0]*A[1][2]*A[2][1])
+	var detA_cuberoot = (Math.pow(Math.abs(detA),1/3))*Math.sign(detA);
+	var factor = 0.25//QZMath.lerp(0.15,0.5,Math.max(1-Math.abs(1/detA_cuberoot),0));
+	//detA_cuberoot += (detA_cuberoot==0)*0.01;
+	//find R
+	var R = QZMath.findRotationPart(Apq,3);
+	//bad rotation matrix coming out of this...
+	//console.log(R)
+	//adjust to goal position
+	for (var i = 0; i < this.pt_count; i++) {
+		var pt = this.pt_list[i];
+		var q = this.q_list[i];
+		var g0 = R[0][0]*q[0]+R[0][1]*q[1]+R[0][2]*q[2];
+		var g1 = R[1][0]*q[0]+R[1][1]*q[1]+R[1][2]*q[2];
+		var g2 = R[2][0]*q[0]+R[2][1]*q[1]+R[2][2]*q[2];
+
+		g0 = QZMath.lerp((A[0][0]*q[0]+A[0][1]*q[1]+A[0][2]*q[2])/detA_cuberoot,g0,factor);
+		g1 = QZMath.lerp((A[1][0]*q[0]+A[1][1]*q[1]+A[1][2]*q[2])/detA_cuberoot,g1,factor);
+		g2 = QZMath.lerp((A[2][0]*q[0]+A[2][1]*q[1]+A[2][2]*q[2])/detA_cuberoot,g2,factor);
+		
+		g0 += this.cm.x
+		g1 += this.cm.y
+		g2 += this.cm.z
+		
+		pt.p.x = QZMath.lerp(pt.p.x,g0,1);
+		pt.p.y = QZMath.lerp(pt.p.y,g1,1);
+		pt.p.z = QZMath.lerp(pt.p.z,g2,1);
+	};
+	
+	for(var i = 0; i < 3; i++){
+	    for(var j = 0; j < 3; j++){
+			this.mesh.matrix.elements[i*4+j]= QZMath.lerp(A[j][i]/detA_cuberoot,R[j][i],factor);
+		};
+	};
+	this.mesh.matrix.elements[12] = this.cm.x;
+	this.mesh.matrix.elements[13] = this.cm.y;
+	this.mesh.matrix.elements[14] = this.cm.z;
+	
+};
 
 function main() {
 //size of display area
@@ -249,6 +422,7 @@ var s1 = new VerletSpring(v0,v1,150,v_world);
 var s2 = new VerletSpring(v1,v2,150,v_world);
 var s2 = new VerletSpring(v2,v0,150,v_world);
 for*/
+/*
 var v0 = new VerletPt(32,1,v_world);
 var v1 = new VerletPt(32,1,v_world);
 var si = new VerletSpring(v0,v1,128,v_world);
@@ -263,14 +437,92 @@ for (var i = 0; i < 10; i++) {
 	}
 	v0 = v1;
 	v1 = vi;
-}
+}*/
+// make a spawner that takes in geometry from THREE
+var v_geometry = new THREE.IcosahedronGeometry(100,0);//new THREE.BoxGeometry(200,200,200,1,1,1);//new THREE.BoxGeometry(50,300,300,1,1,1);// new THREE.TorusGeometry(50,32,1,10);////new THREE.IcosahedronGeometry(100,1);// new THREE.TorusGeometry(50,32,1,10);//
+//new THREE.CircleGeometry( 100, 16 );
+var v_material = new THREE.MeshBasicMaterial( {wireframe: true, color: 0xffff00, openEnded : true} );
+var v_wire = new THREE.Mesh( v_geometry, v_material );
+var v_map = {};
+var s_map = {};
+
+for (var i = 0, L=v_geometry.vertices.length; i < L; i++) {
+	var v=v_geometry.vertices[i];
+	var pt = new VerletPt(16,1,v_world);
+	pt.setPosition(v);
+};
+
+var v_RB = new VerletRB(v_world.pt_list,v_geometry,v_world);
+
+/*
+e=0;
+var check_pairs=[['a','b'],['b','c'],['c','a']];
+for (var i = 0, L=v_geometry.faces.length; i < L; i++) {
+	var f=v_geometry.faces[i];
+	if(f==null){ //faces array has empty faces at the end (padding?)
+		continue;
+
+	}
+	//add edges that dont exist by managing a map of all edges
+	for (var check = 0; check < 3; check++) {
+		var a = f[check_pairs[check][0]];
+		var b = f[check_pairs[check][1]];
+		//if(a==40||b==41) console.log('hit');
+		var p0;
+		var p1;
+		if(a == b) continue;
+		if(a < b){
+			p0 = a;
+			p1 = b;
+		}else{
+			p0 = b;
+			p1 = a;		
+		}
+
+		var L = (v_geometry.vertices[p0].clone().sub(v_geometry.vertices[p1])).length();
+		var addSpring = false;
+		if(!(p0 in s_map)){
+			s_map[p0]={};
+			addSpring=true;
+		}else if(!(p1 in s_map[p0])){
+			addSpring=true;
+		};
+		if(addSpring){
+			if(!(p0 in v_map)){
+				var pt = new VerletPt(16,1,v_world);
+				pt.setPosition(v_geometry.vertices[p0]);
+				v_map[p0] = pt;
+				e++;
+			};
+			if(!(p1 in v_map)){
+				var pt = new VerletPt(16,1,v_world);
+				pt.setPosition(v_geometry.vertices[p1]);
+				v_map[p1] = pt;
+				e++;
+			};
+			//console.log(v_list[p0],v_list[p1]);
+			s_map[p0][p1] = new VerletSpring(v_map[p0],v_map[p1],L,v_world)
+			
+		};
+	};
+};
+console.log(e,v_geometry.vertices.length)
+*/
+//scene.add( v_wire );
+
+
 var plane0 = new VerletSolidPlane(new THREE.Vector3(0,-500,0), new THREE.Vector3(0,1,0),new THREE.Color(1,1,1),v_world);
 var plane1 = new VerletSolidPlane(new THREE.Vector3(500,0,0), new THREE.Vector3(-1,0,0),new THREE.Color(1,1,1),v_world);
 var plane2 = new VerletSolidPlane(new THREE.Vector3(-500,0,0), new THREE.Vector3(1,0,0),new THREE.Color(1,1,1),v_world);
 var plane3 = new VerletSolidPlane(new THREE.Vector3(0,500,0), new THREE.Vector3(0,-1,0),new THREE.Color(1,1,1),v_world);
 var plane4 = new VerletSolidPlane(new THREE.Vector3(0,0,500), new THREE.Vector3(0,0,-1),new THREE.Color(1,1,1),v_world);
 var plane5 = new VerletSolidPlane(new THREE.Vector3(0,0,-500), new THREE.Vector3(0,0,1),new THREE.Color(1,1,1),v_world);
-
+//plane0.mesh.visible = true;
+//plane1.mesh.visible = false;
+//plane2.mesh.visible = false;
+//plane3.mesh.visible = false;
+//plane4.mesh.visible = false;
+//plane5.mesh.visible = false;
 	g = new THREE.SphereGeometry( 10, 100, 100);
 	m = new THREE.MeshPhongMaterial( { color: new THREE.Color(1,0,0) } );
 
@@ -325,9 +577,11 @@ var update = function(){
 		selected_VerletPt.p_prev.z =  QZMath.lerp(selected_VerletPt.p.z,selected_VerletPt.p_prev.z-(mouse3D.z-(selected_VerletPt.p.z+cursor_selected_offset.z))*0.1,0.8);
 		
 	}
+	/*
 	v1.p_prev.x =  QZMath.lerp(v1.p.x,v1.p_prev.x-(Math.cos(current_time_ms*Math.PI/2500)*100-(v1.p.x+cursor_selected_offset.x))*0.1,0.8);
 	v1.p_prev.y =  QZMath.lerp(v1.p.y,v1.p_prev.y-(300+Math.cos(current_time_ms*Math.PI/1000)*200-(v1.p.y+cursor_selected_offset.y))*0.1,0.8);
 	v1.p_prev.z =  QZMath.lerp(v1.p.z,v1.p_prev.z-(Math.sin(current_time_ms*Math.PI/2500)*100-(v1.p.z+cursor_selected_offset.z))*0.1,0.8);
+	*/
 	/*var e = camera.matrixWorld.elements;
 	var cam_x = new THREE.Vector3(e[ 0 ],e[ 1 ],e[ 2 ]);
 	var cam_y = new THREE.Vector3(e[ 4 ],e[ 5 ],e[ 6 ]);
