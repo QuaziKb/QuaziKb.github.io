@@ -8,6 +8,11 @@ QZMouse = {};
 QZTouch = {};
 QZTouch.touches={};
 QZTouch.hasTouch=false;
+QZMotion = {}
+QZMotion.hasOrn = false;
+QZMotion.hasAcc = false;
+QZMotion.orn = {};
+QZMotion.acc = {};
 
 QZKey_frames = {};
 QZMouse_frames = {0:0,1:0,2:0};
@@ -46,6 +51,18 @@ QZMouse_frames = {0:0,1:0,2:0};
 	window.addEventListener( 'touchstart', onTouchStart, false );
 	//window.domElement.addEventListener( 'touchend', onTouchEnd, false );
 	//window.domElement.addEventListener( 'touchmove', onTouchMove, false );
+	
+	//orientation/accel
+	function handleOrientation(event){
+		QZMotion.hasOrn = true;
+		QZMotion.orn	= event;
+	}
+	function handleMotion(event){
+		QZMotion.hasAcc = true;
+		QZMotion.acc = event;
+	}
+	window.addEventListener("devicemotion", handleMotion, true);
+	window.addEventListener("deviceorientation", handleOrientation, true);
 })();
 
 //call this every render if you want a sane callback free keyboard detection system. Be sure to populate the _frames with the keycodes and buttons you want to time.

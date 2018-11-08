@@ -541,6 +541,12 @@ var update = function(){
 	if(QZTouch.hasTouch) 	mouse_mesh.visible = false;
 	
 	QZMath.updateKeyAndMouseFrames();
+	
+	if(QZMotion.hasAcc){
+		var grav = QZMotion.acc.accelerationIncludingGravity;
+		v_world.gravity.set(grav.x/10,grav.y/10,grav.z/10);
+	};
+	
 	for (var i = 0; i < v_world.selectable_mesh_count; i++) {
 		var mesh = v_world.selectable_mesh_list[i];
 		mesh.material.color.set( 0xffffff );
