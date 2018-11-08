@@ -661,6 +661,7 @@ B[2][2]=m[2][0]*p2 + m[2][1]*p4 + m[2][2]*p5;
 return B;
 };
 
+/* //regexp uses look behind which is poorly supported....
 QZMath.woflramCopyablePlainTestToJSMath = function(){
 var str = "(c_0 (e_0 v_0^2 + e_1 v_1^2 + e_2 v_2^2) + c_1 (e_0 v_0 v_10 + e_1 v_1 v_11 + e_2 v_2 v_12) + c_2 (e_0 v_0 v_20 + e_1 v_1 v_21 + e_2 v_2 v_22) | c_0 (e_0 v_0 v_10 + e_1 v_1 v_11 + e_2 v_2 v_12) + c_1 (e_0 v_10^2 + e_1 v_11^2 + e_2 v_12^2) + c_2 (e_0 v_10 v_20 + e_1 v_11 v_21 + e_2 v_12 v_22) | c_0 (e_0 v_0 v_20 + e_1 v_1 v_21 + e_2 v_2 v_22) + c_1 (e_0 v_10 v_20 + e_1 v_11 v_21 + e_2 v_12 v_22) + c_2 (e_0 v_20^2 + e_1 v_21^2 + e_2 v_22^2) | c_10 (e_0 v_0^2 + e_1 v_1^2 + e_2 v_2^2) + c_11 (e_0 v_0 v_10 + e_1 v_1 v_11 + e_2 v_2 v_12) + c_12 (e_0 v_0 v_20 + e_1 v_1 v_21 + e_2 v_2 v_22) | c_10 (e_0 v_0 v_10 + e_1 v_1 v_11 + e_2 v_2 v_12) + c_11 (e_0 v_10^2 + e_1 v_11^2 + e_2 v_12^2) + c_12 (e_0 v_10 v_20 + e_1 v_11 v_21 + e_2 v_12 v_22) | c_10 (e_0 v_0 v_20 + e_1 v_1 v_21 + e_2 v_2 v_22) + c_11 (e_0 v_10 v_20 + e_1 v_11 v_21 + e_2 v_12 v_22) + c_12 (e_0 v_20^2 + e_1 v_21^2 + e_2 v_22^2)|c_20 (e_0 v_0^2 + e_1 v_1^2 + e_2 v_2^2) + c_21 (e_0 v_0 v_10 + e_1 v_1 v_11 + e_2 v_2 v_12) + c_22 (e_0 v_0 v_20 + e_1 v_1 v_21 + e_2 v_2 v_22) | c_20 (e_0 v_0 v_10 + e_1 v_1 v_11 + e_2 v_2 v_12) + c_21 (e_0 v_10^2 + e_1 v_11^2 + e_2 v_12^2) + c_22 (e_0 v_10 v_20 + e_1 v_11 v_21 + e_2 v_12 v_22) | c_20 (e_0 v_0 v_20 + e_1 v_1 v_21 + e_2 v_2 v_22) + c_21 (e_0 v_10 v_20 + e_1 v_11 v_21 + e_2 v_12 v_22) + c_22 (e_0 v_20^2 + e_1 v_21^2 + e_2 v_22^2))"
 str = str.replace(/(?<=[^+\|])[\s](?=[^+\|])/g,'*');
@@ -684,4 +685,5 @@ str = str.replace(/c_1/g,'m[0][1]');
 str = str.replace(/c_2/g,'m[0][2]');
 console.log(str);
 };
+*/
 	
