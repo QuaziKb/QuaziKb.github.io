@@ -125,9 +125,9 @@ VerletPt.prototype.setPosition = function(position) {
 	//this.mesh.position.copy(position);
 };
 function VerletSolidPlane(position,normal,color,world){
-	//this.material = new THREE.MeshPhongMaterial( { color: color } );
-	this.material = new THREE.ShadowMaterial();
-	this.material.opacity = 0.25;
+	this.material = new THREE.MeshPhongMaterial( { color: color } );
+	//this.material = new THREE.ShadowMaterial();
+	//this.material.opacity = 0.25;
 	this.p = new THREE.Vector3().copy(position);
 	this.n = new THREE.Vector3().copy(normal);
 	this.n = this.n.normalize();
@@ -342,14 +342,15 @@ var height = h/scale;
 var width = w/scale;
 
 var scene = new THREE.Scene();
-
-var camera = new THREE.PerspectiveCamera( 75, w/h, 0.1, 10000 );
+var fov = 75;
+var camera = new THREE.PerspectiveCamera( fov, w/h, 1, 10000 );
 //camera.updateProjectionMatrix();
 //camera.projectionMatrixInverse = new THREE.Matrix4();
 //camera.projectionMatrixInverse.getInverse(camera.projectionMatrix);
 
 //var camera = new THREE.OrthographicCamera( width/-2, width/2, height/2, height/-2, 0.1 , 2000 );
-camera.position.z = 1000;
+camera.position.z = (500/Math.tan((fov * Math.PI/180)/2))+500;
+console.log(camera.position.z)
 			
 var renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize( w, h );
@@ -544,8 +545,11 @@ var update = function(){
 	
 	if(QZMotion.hasAcc){
 		var grav = QZMotion.acc.accelerationIncludingGravity;
-		v_world.gravity.set(grav.x/10,grav.y/10,grav.z/10);
-	};
+		v_world.gravity.set(grav.x/5,grav.y/5,grav.z/5);
+		v_world.gravity.applyQuaternion(camera.quaternion.clone())
+	}else{
+		v_world.gravity.set(0,-1,0);
+	}
 	
 	for (var i = 0; i < v_world.selectable_mesh_count; i++) {
 		var mesh = v_world.selectable_mesh_list[i];

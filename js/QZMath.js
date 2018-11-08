@@ -1,5 +1,5 @@
 //Basic functions that are nice to have, don't want to redefine these all the time
-console.log('ie.SUCKS')
+
 window.QZ_IE_Hack_updates= new Array();
 
 QZMath = {};
@@ -58,8 +58,20 @@ QZMouse_frames = {0:0,1:0,2:0};
 		QZMotion.orn	= event;
 	}
 	function handleMotion(event){
-		QZMotion.hasAcc = true;
-		QZMotion.acc = event;
+			if( //... fires event with null values on some browsers...
+			event.acceleration.x === null || 
+			event.acceleration.y === null ||
+			event.acceleration.z === null ||
+			event.accelerationIncludingGravity.x === null ||
+			event.accelerationIncludingGravity.y === null ||
+			event.accelerationIncludingGravity.z === null 
+			){
+				QZMotion.hasAcc = false;
+			}else{
+				QZMotion.hasAcc = true;
+				QZMotion.acc = event;
+			}
+
 	}
 	window.addEventListener("devicemotion", handleMotion, true);
 	window.addEventListener("deviceorientation", handleOrientation, true);
