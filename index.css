@@ -10,6 +10,7 @@ html *
     line-height: 1.3;
     /*padding: 0;*/
     color: rgb(34,34,34);
+	text-align:justify;
 }
 
 body{
@@ -46,6 +47,10 @@ IMG.displayed {
     margin-right: auto }
 	
 #cent_text {
+	text-align: center;
+}
+
+.slidecontainer {
 	text-align: center;
 }
 
@@ -138,17 +143,14 @@ canvas {
 	border:0;
 	border-collapse:collapse;
 }
-
 .inline_mtx
 {
 	display: inline-block;
 }
-
 div.centered 
 {
     text-align: center;
 }
-
 div.centered table 
 {
     margin: 0 auto; 
