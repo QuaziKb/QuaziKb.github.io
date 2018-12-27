@@ -31,22 +31,22 @@
 Finding eigenvalues and eigenvectors of symmetric matrices is useful in many cases. Typically you don't have to implement your own algorithms to do this since there are so many packages around that can do it really well. But there are still times you might want to do it yourself, particularly when dealing with small matrices so you can write some tight code. for 2x2 matrices there's a fast analytic approach, and this can be leveraged to iteratively converge for "larger" matrices. The technique I'm going to use here is called the "Jacobi Algorithm". I used <a href = http://people.math.gatech.edu/~klounici6/2605/Lectures%20notes%20Carlen/chap3.pdf>Chapter 3 of Calculus++: The Symmetric Eigenvalue Problem</a> by Eric A Carlen to figure out how to get this working.
 <br>
 <br>
-for such a matrix I show how eigenvalues \(\mu_+\) and \(\mu_-\) are found.
+for such a matrix I show how eigenvalues \(\mu_+\) and \(\mu_-\) are found,
 <br>
 <br>
 <div class="hide_math" style="visibility:hidden">
-	<p>
+	\[
 	\begin{align}
 	A={A}^\intercal&=\begin{bmatrix}a & b\\b & d\end{bmatrix}\\
 	\mu_+&=\dfrac{a+d}{2}+\sqrt{b^2+(\dfrac{a-d}{2})^2}\\
 	\mu_-&=\dfrac{a+d}{2}-\sqrt{b^2+(\dfrac{a-d}{2})^2}\\
 	\end{align}
-	</p>
+	\]
 </div>
 <br>
 <br>
-<div class="cent_text">
-with the eigenvalues it's easy to find the eigenvectors \(\textbf{u}_0\) and \(\textbf{u}_1\).
+<div class="">
+with the eigenvalues it's easy to find the eigenvectors \(\textbf{u}_0\) and \(\textbf{u}_1\),
 </div>
 <br>
 <br>
@@ -60,7 +60,7 @@ with the eigenvalues it's easy to find the eigenvectors \(\textbf{u}_0\) and \(\
 </div>
 <br>
 <br>
-<div class="cent_text">
+<div class="">
 finding \(\textbf{v}^\perp\) from \(\textbf{v}\) is straightforward in 2D,
 </div>
 <br>
@@ -75,8 +75,8 @@ finding \(\textbf{v}^\perp\) from \(\textbf{v}\) is straightforward in 2D,
 </div>
 <br>
 <br>
-<div class="cent_text">
-for symmetric matrices all eigenvectors are orthogonal so : \(\textbf{u}_1=\textbf{u}_0^\perp\). With all this we can perform a diagonalization :
+<div class="">
+for symmetric matrices all eigenvectors are orthogonal so : \(\textbf{u}_1=\textbf{u}_0^\perp\). With all this we can perform a diagonalization:
 </div>
 <br>
 <br>
@@ -128,6 +128,9 @@ Below you can modify some arbitrary \(A\) matrix and see the resulting orthogona
 <br>
 <div>
 Some practical notes when you implement this. If the off diagonal elements are zero, and the diagonal elements are equal, or one is greater than the other, the process outlined above seems to spit out NaN's since a division by zero occurs. I found an easy way to fix this is to just add some very small value to the off diagonals to ensure they're non-zero. This prevents the division by zero. Technically there's no point even doing anything in this case because your eigenvalues ARE the diagonal entries, however maybe it's advantageous to code this without adding explicit checks for performance reasons on some hardware (GPU implementation?).
+<br>
+<br>
+Check out <a href="../jacobi3/index.html">3x3 jacobi algorithm</a> for an example of using the algorithm to iteratively diagonalize in the 3x3 case.
 </div>
 <br>
 <br>

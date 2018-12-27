@@ -1,0 +1,48 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../index.css">
+	<META name="keywords" content="overfitting, dog, dream, autoencoder"> 
+	<title>Orbital Mechanics</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function () {	
+  // Hide MathJax until rendered by putting them in divs of the class "hide_math"
+	var mathdivs = document.getElementsByClassName("hide_math");
+	for (i = 0; i < mathdivs.length; i++) { 
+		mathdivs[i].style.visibility = "";
+	}	
+  });
+</script>
+<script 
+   src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'>
+</script>
+</head>
+<body>
+<div id="wrap">
+
+<h1>Dreaming of a Dog</h1>
+<video width="50%" height="50%" class="displayed" autoplay loop>
+  <source src="/src/dog64.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<br>
+<br>
+I was playing around with a convolutional autoencoder, and trained it to overfit on this picture of a puppy to make sure nothing was broken. I thought the end result looked pretty cool, you can watch the neural network learn to reproduce this single image of a dog in various steps, starting with the overall shape and then narrowing down to coloring specific regions, and finally really fighting to repair some strange artifact in the lower right. Nothing special here really other than a visualization of overfitting in action, but it certainly looks interesting :)
+<br>
+<br>
+<hr>
+<h2>Site Navigation</h2>
+<a href="../index.html">Homepage</a>
+	<br>
+	<br>
+	<hr>
+<div id="copyright_text">
+&copy; 2018 Kevin Bergamin.
+</div>
+</div>
+
+</BODY>
+</HTML>
