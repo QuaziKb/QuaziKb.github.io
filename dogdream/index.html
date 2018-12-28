@@ -39,7 +39,7 @@ Your browser does not support the video tag.
 </video>
 <br>
 <br>
-This second videos shows the same kind of process in action, but for a convolutional autoencoder with skip connections.
+This second videos shows the same kind of process in action, but for a convolutional autoencoder with skip connections. Not exactly sure why overfitting in this way leads to these "dark holes" appearing during training, but we see the last thing the network learns is to heal this scar in the reconstruction. An interesting effect after the addition of the skip connection is the "whole image" flickering seen in the other sequence are replaced with the flickering of individual rounded patches. I think this flickering results from the batch normalization coeffecients deeper in the bottleneck varying and effecting the entire image, whereas with skip connections the effect is somewhat mitigated.
 <br>
 <br>
 <hr>
