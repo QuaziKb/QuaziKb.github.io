@@ -39,7 +39,16 @@ Your browser does not support the video tag.
 </video>
 <br>
 <br>
-This second videos shows the same kind of process in action, but for a convolutional autoencoder with skip connections. Not exactly sure why overfitting in this way leads to these "dark holes" appearing during training, but we see the last thing the network learns is to heal this scar in the reconstruction. An interesting effect after the addition of the skip connection is the "whole image" flickering seen in the other sequence are replaced with the flickering of individual rounded patches. I think this flickering results from the batch normalization coeffecients deeper in the bottleneck varying and effecting the entire image, whereas with skip connections the effect is somewhat mitigated.
+This second videos shows the same kind of process in action, but for a convolutional autoencoder with skip connections. Not exactly sure why overfitting in this way leads to "dark holes" appearing during training, but we see the last thing the network learns is to heal this scar in the reconstruction. An interesting effect after the addition of the skip connection is the "whole image" flickering effects seen in the other sequence are replaced with the flickering of individual rounded patches. I think this flickering results from the batch normalization coeffecients deeper in the bottleneck varying and affecting the entire image, whereas with skip connections the effect is somewhat mitigated.
+<br>
+<br>
+<video width="50%" height="50%" class="displayed" controls autoplay loop>
+  <source src="/dogdream/src/dogmeshgrid64.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<br>
+<br>
+This is kind of the same grid but on the last layer I add a meshgrid to the normal output... nothing special really but it kind of led to a cool looking rainbow background, because it was difficult for the CNN to elimnate this effect on the last layer given the uniformity of the backdrop I suppose? A very inefficient method to replace featureless backdrops with something new!
 <br>
 <br>
 <hr>
