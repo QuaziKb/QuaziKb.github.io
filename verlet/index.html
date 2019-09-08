@@ -27,19 +27,19 @@
 
 <h1>Verlet Physics</h1>
 <br>
-Real time physics simulation is <b>hard</b> to get right. Integrating equations of motion, collision detection, and constraint solving are all very involved topics with tons of complicated literature. Getting things right takes a lot of effort.
+Real time physics simulation is <b>hard</b> to get right. Numerical simulation, equations of motion, collision detection, and constraint solving are all very complex interrelated topics. Getting simulations to work takes a lot of effort.
 <br>
 <br>
-Verlet Physics, or related methods like position based dynamics, are nice because they simplify the work involved with physics simulation considerably. They introduce their own limitations, and their own way of thinking, but generally for systems involving spheres (really point masses because they have no rotational inertia) and static geometry and constraints between spheres they work really well. They're very stable, and very fast. Collision detection is easy when everything is a sphere and signed distance field, and constraint resolution is intuitive, since it involves moving things into the position they should be rather than solving for forces.
+Verlet integration, or related methods like position based dynamics, are nice ideas because they simplify the work involved with physics simulation considerably. They introduce their own limitations and their own way of thinking, but generally for physical systems involving "spheres" (really point masses because they have no rotational inertia), constraints, and static geometry, they're very stable and very fast. Collision detection and resolution is easy when everything is a sphere or signed distance field, and constraint resolution is intuitive since it involves moving things into legal positions using projection rather than solving for forces.
 <br>
 <br>
-Below is a little interactive toy I made using these methods. I like to apply these techniques a lot in games because the implementation is so simple and the code runs really fast. You can make 1D, 2D, and 3D systems (N dimensional works too but good luck visualizing it) with essentially the same techniques, and get nice physically based animation. The systems are stable and adding constraints on the movement is easy to make very stable by changing the priority of various constraint solving steps around. You can make "hacky" physics that runs really fast, looks just as good as real rigid body physics, and remove all the overhead of having an enormous proper 3D physics engine do a ton of work just to make a springy thing move around based on some changing positions.
+Below is a little interactive toy I made using verlet integration. I like to apply verlet integration a lot in games because the implementation is so simple and the code runs really fast. You can make 1D, 2D, and 3D systems (N dimensional works too but good luck visualizing it) with essentially the same techniques, and get nice physically based systems. The simulations are stable and adding constraints on the movement is easy. You can make "hacky" physics that runs really fast, looks just as good as real rigid body physics in most cases. This is really nice for secondary motion, since you can have real physics moving objects around reactively without needing to have the overhead of a fully featured physics engine.
 <br>
 <br>
 <script src="js/main.js"></script>
 <br>
 <div id="cent_text">
-<i><b>figure 1</b> : verlet physics softbody</i>
+<i><b>figure 1</b> : verlet physics softbody using shape matching</i>
 </div>
 <br>
 <hr>
