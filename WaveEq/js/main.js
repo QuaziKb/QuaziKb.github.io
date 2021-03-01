@@ -237,7 +237,7 @@ var refreshFlag = false;
 var refreshCB = function(){
     refreshFlag = true;
 }
-var env_mode = new QZMath.createSlider("medium shape",0,0,4,1,owner_idA);
+var env_mode = new QZMath.createSlider("medium shape",0,0,5,1,owner_idA);
 // Asynchronously load images
 if(true){
     var image = new Image();
