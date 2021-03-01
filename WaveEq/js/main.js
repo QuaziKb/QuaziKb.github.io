@@ -305,7 +305,7 @@ var slider_intensity = new QZMath.createSlider("light intensity",0.80,0,1,0.001,
 var white_intensity = new QZMath.createSlider("white intensity",1.0,0,1,0.001,owner_idB);
 var filter_constant = new QZMath.createSlider("averaging filter constant",0.01,0.01,1,0.001,owner_idB);
 var disp_constant = new QZMath.createSlider("dispersion constant",0.55,0.01,1,0.001,owner_idB);
-var media_wavespd_constant = new QZMath.createSlider("media wavespeed fraction",0.7,0.0,1,0.001,owner_idB);
+var media_wavespd_constant = new QZMath.createSlider("medium wavespeed fraction",0.7,0.0,1,0.001,owner_idB);
 var slider_r = new QZMath.createSlider("wave speed",1,0,1,0.001,owner_idB);	
 
 //render to texture stuff (https://webglfundamentals.org/webgl/lessons/webgl-render-to-texture.html)
