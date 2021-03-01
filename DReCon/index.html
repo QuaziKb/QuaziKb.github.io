@@ -1,0 +1,64 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../index.css">
+	<META name="keywords" content="verlet physics"> 
+	<title>Verlet</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function () {	
+  // Hide MathJax until rendered by putting them in divs of the class "hide_math"
+	var mathdivs = document.getElementsByClassName("hide_math");
+	for (i = 0; i < mathdivs.length; i++) { 
+		mathdivs[i].style.visibility = "";
+	}	
+  });
+</script>
+<script type="text/javascript" src="../js/MathJax/MathJax.js?config=TeX-AMS_HTML-full"></script>
+<script src="../js/QZMath.js"></script>
+<script src="../js/three.js"></script>
+<script src="../js/OrbitControls.js"></script>	
+</head>
+
+<body>
+<div id="wrap">
+<h1>DReCon</h1>
+Animation brings characters in games alive, at least when it looks right.
+<br>
+<br>
+Our everyday movement is nuanced. Animators reference the twelve basic principles of animation when creating animation for this reason. But what are these? These principles are guidelines, many for preserving interesting dynamics that arise from real world physics. A couple of examples: the principle of “Squash and stretch” captures the behaviour of elastic deformation, and the principle of “Follow through and overlapping action” captures the effects of inertia and modal vibration. I would argue that interesting animation usually has some physically plausible attributes, regardless of how exaggerated the subjects or movement may be for stylistic reasons.
+<br>
+<br>
+Our research over the past few years has focused on how animation and physics should work together. Videogames contain interactive worlds filled with physical phenomena, but characters aren’t usually participating as one of them. Game developers try to cheat by playing animations that fit the context of gameplay, but we believe animation should instead arise from physics entirely, rather than do its best to imitate it. We’ve worked hard to develop a method of doing just that by combining state of the art advancements in game animation, robotics and machine learning. Games have unique constraints and our work has always kept those in mind, ensuring our method has a runtime cost which makes it viable on today’s hardware, and maintains a high level of responsiveness to meet input requirements. At SIGGRAPH ASIA 2019 I will be presenting a research paper which presents the culmination of these efforts, titled DReCon: Data-Driven Responsive Control of Physics-Based Characters.
+<br>
+<br>
+<div id="cent_text">
+	<div class="slidecontainer"  class="slidecontainer">
+	<br>
+	<input type="range" min="-100" max="100" value="100" class="slider" id="eslider" onchange="eslider.oninput()">
+	<div id="eslider_txt"  class="slidecontainer">
+	</div>
+	</div>
+</div>
+<script src="js/playback_array.js"></script>
+<script src="js/main.js"></script>
+<br>
+<div id="cent_text">
+<i><b>figure 1</b> : DReCon (move the camera around)</i>
+</div>
+<br>
+<hr>
+<h2>Site Navigation</h2>
+<a href="../index.html">Homepage</a>
+	<br>
+	<br>
+	<hr>
+<div id="copyright_text">
+&copy; 2018 Kevin Bergamin.
+</div>
+</div>
+
+</BODY>
+</HTML>

@@ -1,0 +1,108 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<META name="keywords" content="Quazi, TowerClimb, Tower Climb, game, gamedev, indie, engineer, engineering, programming, Kevin"> 
+	<title>Wave Equation</title>
+		<style>
+			body { margin: 10; }
+			canvas { width: 512px; height: 512px }
+		</style>
+	
+</head>
+<script src="../js/QZMath.js"></script>
+<body>
+
+<div id="wrap">
+
+<h1>Wave Equation</h1>
+<canvas id="c"></canvas>
+
+</div>
+
+</body>
+  
+<!-- you can and should delete this script. it is only used on the site to help with errors -->
+<script id="2d-vertex-shader" type="x-shader/x-vertex">
+
+  // an attribute will receive data from a buffer
+  uniform mat3 u_matrix;
+  
+  attribute vec4 a_position;
+  attribute vec2 a_texcoord;
+  
+  varying vec4 p_position;
+  varying vec2 v_texcoord;
+  // all shaders have a main function
+  void main() {
+
+    // gl_Position is a special variable a vertex shader
+    // is responsible for setting
+    p_position = a_position;
+	p_position.xy = (u_matrix * vec3(p_position.xy, 1)).xy;
+    gl_Position = p_position;
+    
+    // Pass the texcoord to the fragment shader.
+    v_texcoord = a_texcoord;
+  }
+
+</script>
+<script id="2d-fragment-shader" type="notjs">
+
+// fragment shaders don't have a default precision so we need
+// to pick one. mediump is a good default
+// some fragment shader
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+  precision highp float;
+#else
+  precision mediump float;
+#endif
+
+uniform vec3 slider3;
+uniform float t;
+varying vec4 p_position;
+varying vec2 v_texcoord;
+uniform vec2 pix_sz;
+uniform sampler2D u_texture;
+uniform sampler2D u_texture_prev;
+
+void main() {
+   
+	vec2 s = pix_sz;
+    vec4 c = (texture2D(u_texture, v_texcoord+vec2(s.x,0.0))
+                   +texture2D(u_texture, v_texcoord+vec2(-s.x,0.0))
+                   +texture2D(u_texture, v_texcoord+vec2(0.0,s.y))
+                   +texture2D(u_texture, v_texcoord+vec2(0.0,-s.y)))/4.0;
+    vec4 t1 = texture2D(u_texture, v_texcoord)-0.5;
+    vec4 t0 = texture2D(u_texture_prev, v_texcoord)-0.5;
+    vec4 v = t1-t0;
+    gl_FragColor.r = c.r;
+    gl_FragColor.g = v.r*100.0;
+    gl_FragColor.b = v.r*-100.0;
+    gl_FragColor.a = 1.0;
+}
+
+</script>
+<script id="2d-fragment-shader-basic" type="notjs">
+
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+  precision highp float;
+#else
+  precision mediump float;
+#endif
+
+uniform vec3 slider3;
+uniform float t;
+varying vec4 p_position;
+varying vec2 v_texcoord;
+uniform vec2 pix_sz;
+uniform sampler2D u_texture;
+uniform sampler2D u_texture_prev;
+
+void main() {
+    gl_FragColor = texture2D(u_texture, v_texcoord)*vec4(1.0,0.1,0.1,1.0);
+}
+
+</script>
+<script src="js/webgl-utils.js"></script>
+<script src="js/m3.js"></script>
+<script src="js/main.js"></script>

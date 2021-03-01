@@ -22,6 +22,9 @@ body{
 	margin: 0 auto; 
 }
 
+#side_by_side_div {
+}
+
 h1 {
 	font-family: Baskerville, "Times New Roman", serif;
 	font-weight:lighter;
@@ -54,9 +57,23 @@ h3 {
 	text-align: center;
 }
 
+.btncontainer {
+    text-align: center;
+	font-family: Arial;
+    font-size: 15px;
+}
+
 .cent_text {
 	text-align: center;
 }
+
+.slider_text {
+    text-align: center;
+	font-family: Arial;
+    font-size: 15px;
+    
+}
+
 
 #copyright_text {
 	text-align: center;
@@ -72,6 +89,13 @@ hr {
 #med_img {
     max-width:256px;
     max-height:256px;
+    width:auto;
+    height:auto;
+}
+
+#big_img {
+    max-width:512;
+    max-height:512;
     width:auto;
     height:auto;
 }

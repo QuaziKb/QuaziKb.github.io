@@ -1,0 +1,60 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<META name="keywords" content="Quazi, TowerClimb, Tower Climb, game, gamedev, indie, engineer, engineering, programming, Kevin"> 
+	<title>Quazi (Homepage)</title>
+		<style>
+			body { margin: 10; }
+			canvas { width: 512px; height: 512px }
+		</style>
+	
+</head>
+<script src="../js/QZMath.js"></script>
+<body>
+
+<div id="wrap">
+
+<h1>WebGL Canvas</h1>
+<canvas id="c"></canvas>
+
+</div>
+
+</body>
+  
+<!-- you can and should delete this script. it is only used on the site to help with errors -->
+<script id="2d-vertex-shader" type="notjs">
+
+  // an attribute will receive data from a buffer
+  attribute vec4 a_position;
+  varying vec4 p_position;
+  // all shaders have a main function
+  void main() {
+
+    // gl_Position is a special variable a vertex shader
+    // is responsible for setting
+    gl_Position = a_position;
+	p_position = gl_Position;
+  }
+
+</script>
+<script id="2d-fragment-shader" type="notjs">
+
+// fragment shaders don't have a default precision so we need
+// to pick one. mediump is a good default
+precision mediump float;
+uniform vec3 slider3;
+uniform float t;
+varying vec4 p_position;
+
+void main() {
+	// gl_FragColor is a special variable a fragment shader
+	// is responsible for setting
+	
+	vec3 color = vec3(slider3);
+	
+	gl_FragColor = vec4(color,1.0);
+}
+
+</script>
+<script src="js/webgl-utils.js"></script>
+<script src="js/main.js"></script>

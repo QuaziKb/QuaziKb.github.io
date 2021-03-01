@@ -78,6 +78,23 @@ QZMouse_frames = {0:0,1:0,2:0};
 })();
 
 //call this every render if you want a sane callback free keyboard detection system. Be sure to populate the _frames with the keycodes and buttons you want to time.
+QZMath.updateMouseFrames = function(){
+	for (var key in QZMouse_frames) {
+		if(key in QZMouse){
+			if(QZMouse_frames[key] < 0){
+				QZMouse_frames[key] = 0;
+			};
+			QZMouse_frames[key] += 1;
+		}else{
+			if(QZMouse_frames[key] > 0){
+				QZMouse_frames[key] = -1;
+			}else{
+				QZMouse_frames[key] = 0;
+			};
+		};
+	};
+};
+
 QZMath.updateKeyAndMouseFrames = function(){
 	for (var key in QZKey_frames) {
 		if(key in QZKey_frames){
@@ -135,7 +152,27 @@ QZMath.FixedDecimals = function(value, decimals) {
 	return value.toFixed(decimals);
 };
 
-QZMath.createSlider = function(name,start_value,min_value,max_value,step_size){
+
+QZMath.createButton = function(name,infotxt,callback,owner="wrap"){
+    this.name=name;
+    // standardize a way of creating value editing sliders
+	this.buttondiv = document.createElement("div");
+	this.buttondiv.classList.add("btncontainer");
+    
+    this.btn = document.createElement("BUTTON");
+    this.btn.innerHTML = name;
+    this.btn.classList.add("btncontainer");
+	this.btn.onclick = callback
+    this.btntxt = document.createElement("div");
+    this.btntxt.classList.add("slider_text")
+	this.btntxt.innerHTML = infotxt;
+    
+	document.getElementById(owner).appendChild(this.buttondiv);
+	this.buttondiv.appendChild(this.btn);
+	this.buttondiv.appendChild(this.btntxt);
+}
+
+QZMath.createSlider = function(name,start_value,min_value,max_value,step_size,owner="wrap"){
 	this.name=name;
 	this.value = QZMath.clamp(start_value,min_value,max_value);
 	this.start_value = this.value;
@@ -161,7 +198,7 @@ QZMath.createSlider = function(name,start_value,min_value,max_value,step_size){
 	
 	// standardize a way of creating value editing sliders
 	this.sliderdiv = document.createElement("div");
-	this.sliderdiv.id = "cent_text";
+	this.sliderdiv.classList.add("slidecontainer");
 	
 	this.slider = document.createElement("INPUT");
 	this.slider.type = "range";
@@ -170,9 +207,10 @@ QZMath.createSlider = function(name,start_value,min_value,max_value,step_size){
 	this.slider.value = String(slider_start);
 	
 	this.slidertxt = document.createElement("div");
+    this.slidertxt.classList.add("slider_text")
 	this.slidertxt.innerHTML = "this is a test";
 	
-	document.getElementById("wrap").appendChild(this.sliderdiv);
+	document.getElementById(owner).appendChild(this.sliderdiv);
 	this.sliderdiv.appendChild(this.slider);
 	this.sliderdiv.appendChild(this.slidertxt);
 	
