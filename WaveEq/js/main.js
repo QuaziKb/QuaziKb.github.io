@@ -203,7 +203,11 @@ gl.activeTexture(gl.TEXTURE0);
 gl.bindTexture(gl.TEXTURE_2D, texture4);
 gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
               new Uint8Array([0, 255, 255, 255]));      
-              
+var texture5 = gl.createTexture();
+gl.activeTexture(gl.TEXTURE0);
+gl.bindTexture(gl.TEXTURE_2D, texture5);
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE,
+              new Uint8Array([0, 255, 255, 255]));                
 // code above this line is initialization code.
 wave_shd.bind_buffers(positionBuffer,texcoordBuffer)
 basic_shd.bind_buffers(positionBuffer,texcoordBuffer)
@@ -301,6 +305,18 @@ if(true){
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     gl.generateMipmap(gl.TEXTURE_2D);
     env_mode.slider.value = 4;
+    env_mode.slider.oninput();
+    });
+    var image4 = new Image();
+    image5.src = "texture5.png";
+    image5.addEventListener('load', function() {
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture4);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,gl.UNSIGNED_BYTE, image5);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    env_mode.slider.value = 5;
     env_mode.slider.oninput();
     });
 }
@@ -418,6 +434,8 @@ var animate = function () {
             gl.bindTexture(gl.TEXTURE_2D, texture3);           
         }else if(env_mode.value==4){
             gl.bindTexture(gl.TEXTURE_2D, texture4);           
+        }else if(env_mode.value==5){
+            gl.bindTexture(gl.TEXTURE_2D, texture5);           
         }
     }
     
