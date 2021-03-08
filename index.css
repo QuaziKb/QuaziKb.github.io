@@ -54,10 +54,12 @@ h3 {
 }
 
 .slidecontainer {
+    display: flex;
 	text-align: center;
 }
 
 .btncontainer {
+    display: flex;
     text-align: center;
 	font-family: Arial;
     font-size: 15px;
