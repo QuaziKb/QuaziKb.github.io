@@ -2,20 +2,20 @@
 
 window.QZ_IE_Hack_updates= new Array();
 
-QZMath = {};
-QZKeys = {};
-QZMouse = {};
-QZTouch = {};
-QZTouch.touches={};
-QZTouch.hasTouch=false;
-QZMotion = {}
-QZMotion.hasOrn = false;
-QZMotion.hasAcc = false;
-QZMotion.orn = {};
-QZMotion.acc = {};
+var QZMath = {};
+var QZKeys = {};
+var QZMouse = {};
+var QZTouch = {};
+    QZTouch.touches={};
+    QZTouch.hasTouch=false;
+var QZMotion = {}
+    QZMotion.hasOrn = false;
+    QZMotion.hasAcc = false;
+    QZMotion.orn = {};
+    QZMotion.acc = {};
 
-QZKey_frames = {};
-QZMouse_frames = {0:0,1:0,2:0};
+var QZKey_frames = {};
+var QZMouse_frames = {0:0,1:0,2:0};
 
 //setup callbacks for mouse/keyboard up/down detectors;
 (function(){

@@ -110,6 +110,81 @@ canvas {
     display: block;
 }
 
+.canvas3d {
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin: 2.3em auto 2em auto;
+    padding: 0;
+    user-select: none;
+}
+
+.canvas3d:after {
+    padding-top: 10%;
+    display: block;
+    content: '';
+}
+
+.full_width {
+    max-width: 100%;
+}
+
+.ratio_20:after {
+    padding-top: 20%;
+}
+
+.ratio_25:after {
+    padding-top: 25%;
+}
+
+.ratio_30:after {
+    padding-top: 30%;
+}
+
+.ratio_40:after {
+    padding-top: 40%;
+}
+
+.ratio_50:after {
+    padding-top: 50%;
+}
+
+.ratio_60:after {
+    padding-top: 60%;
+}
+
+.ratio_70:after {
+    padding-top: 70%;
+}
+
+.ratio_80:after {
+    padding-top: 80%;
+}
+
+.ratio_90:after {
+    padding-top: 90%;
+}
+
+.ratio_100:after {
+    padding-top: 100%;
+}
+
+.ratio_110:after {
+    padding-top: 110%;
+}
+
+.ratio_120:after {
+    padding-top: 120%;
+}
+
+.ratio_130:after {
+    padding-top: 130%;
+}
+
+.outlined {
+    border: solid #222;
+}
+
 .bracketed {
   background-image: linear-gradient(#222, #222),
     linear-gradient(#222, #222),
@@ -165,7 +240,7 @@ canvas {
 .borderless_table
 {
 	margin:auto;
-    padding:0;
+        padding:0;
 	border:0;
 	border-collapse:collapse;
 }

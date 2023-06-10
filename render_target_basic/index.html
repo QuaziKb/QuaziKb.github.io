@@ -1,0 +1,50 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="../index.css">
+	<META name="keywords" content="Quazi, TowerClimb, Tower Climb, game, gamedev, indie, engineer, engineering, programming, Kevin"> 
+	<title>Particles</title>
+		<style>
+			body { margin: 10; }
+		</style>
+    <script src="../js/QZMath.js"></script>
+    <script src="../js/three148.js"></script>
+</head>
+<body>
+    <div id="wrap">
+        <h1>Particles</h1>
+    </div>
+    <br>
+    <div id="wrap">
+        <script id="vertex-shader" type="x-shader/x-vertex">
+            uniform vec2 pix_sz;
+            varying vec2 vUv;
+
+            void main() {
+                vUv = uv;
+                gl_Position = vec4(position, 1.0);
+            }
+        </script>
+        <script id="fragment-shader" type="x-shader/x-fragment">
+            uniform vec2 pix_sz;
+            varying vec2 vUv;
+
+            void main() {
+                gl_FragColor = vec4(mod(floor((vUv/pix_sz)/256.0),2.0), 0.0, 1.0);
+            }
+        </script>
+        <script src="js/particles.js"></script>
+    </div>
+
+    <br>
+    Text
+
+    <h2>Site Navigation</h2>
+    <a href="../index.html">Homepage</a>
+        <br>
+        <br>
+        <hr>
+    <div id="copyright_text">
+    &copy; 2022 Kevin Bergamin.
+    </div>
+    </div>
+</body>
